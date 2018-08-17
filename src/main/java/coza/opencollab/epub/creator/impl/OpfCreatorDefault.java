@@ -26,6 +26,9 @@ import coza.opencollab.epub.creator.model.Content;
 import coza.opencollab.epub.creator.model.EpubBook;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import coza.opencollab.epub.creator.model.contributor.Contributor;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.ContentNode;
 import org.htmlcleaner.HtmlCleaner;
@@ -90,11 +93,26 @@ public class OpfCreatorDefault implements OpfCreator {
         addNodeData(metaNode, "dc:title", book.getTitle());
         addNodeData(metaNode, "dc:language", book.getLanguage());
         addNodeData(metaNode, "meta", new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'").format(new Date()));
-        if (book.getAuthor() != null) {
-            TagNode creatorNode = new TagNode("dc:creator");
-            creatorNode.addChild(new ContentNode(book.getAuthor()));
-            metaNode.addChild(creatorNode);
+        addContributorTags(metaNode, book.getContributors());
+    }
+
+    private void addContributorTags(TagNode metaNode, List<Contributor> contributors) {
+        for (Contributor contributor : contributors) {
+            TagNode contributorNode = new TagNode(contributor.getNodeType());
+            contributorNode.addChild(new ContentNode(contributor.getName()));
+            contributorNode.addAttribute("id", contributor.getId());
+            metaNode.addChild(contributorNode);
+
+            if(contributor.getType() != null) {
+                TagNode metaRefineNode = new TagNode("meta");
+                metaRefineNode.addAttribute("refines", "#" + contributor.getId());
+                metaRefineNode.addAttribute("property", "role");
+                metaRefineNode.addAttribute("scheme", "marc:relators");
+                metaRefineNode.addChild(new ContentNode(contributor.getType().toString()));
+                metaNode.addChild(metaRefineNode);
+            }
         }
+
     }
 
     /**

@@ -3,6 +3,9 @@ package coza.opencollab.epub.creator;
 import coza.opencollab.epub.creator.model.EpubBook;
 import java.io.File;
 import java.io.FileOutputStream;
+
+import coza.opencollab.epub.creator.model.contributor.Contributor;
+import coza.opencollab.epub.creator.model.contributor.ContributorType;
 import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -17,6 +20,7 @@ public class EpubCreatorTest {
     public void testEpubCreate() {
         try (FileOutputStream file = new FileOutputStream(new File("test.epub"))) {
             EpubBook book = new EpubBook("en", "Samuel .-__Id1", "Samuel Test Book", "Samuel Holtzkampf");
+            book.addContributor(new Contributor("Ola Normann", ContributorType.Illustrator, true));
 
             book.addContent(this.getClass().getResourceAsStream("/epub30-overview.xhtml"),
                     "application/xhtml+xml", "xhtml/epub30-overview.xhtml", true, true).setId("Overview");
