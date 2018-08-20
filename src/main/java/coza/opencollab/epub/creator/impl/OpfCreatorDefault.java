@@ -99,7 +99,9 @@ public class OpfCreatorDefault implements OpfCreator {
 
     private void addDescription(TagNode metaNode, String description) {
         if(description != null && !description.trim().isEmpty()) {
-            addNodeData(metaNode, "dc:description", description.trim());
+            TagNode descriptionNode = new TagNode("dc:description");
+            descriptionNode.addChild(new ContentNode(description.trim()));
+            metaNode.addChild(descriptionNode);
         }
     }
 
