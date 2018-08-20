@@ -21,7 +21,13 @@
 package coza.opencollab.epub.creator.model;
 
 import coza.opencollab.epub.creator.EpubConstants;
+import coza.opencollab.epub.creator.model.contributor.Author;
+import coza.opencollab.epub.creator.model.contributor.Contributor;
+import coza.opencollab.epub.creator.model.contributor.ContributorType;
 import coza.opencollab.epub.creator.util.EpubWriter;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -60,14 +66,21 @@ public class EpubBook {
      * The title of the book
      */
     private String title;
+
     /**
-     * The author, this is set as the meta data dc:creator value
+     * List of people contributing to this book, including primary contributors such as authors
      */
-    private String author;
+    private List<Contributor> contributors;
     /**
      * Unique content id that is incremental set on content with no id
      */
     private int contentId = 1;
+
+    /**
+     * Unique contributor id that is incremental set on contributors with no id
+     */
+    private int contributorId = 1;
+
     /**
      * List of the links that must be added to the TOC, they can be nested
      */
@@ -101,6 +114,7 @@ public class EpubBook {
         this.contents = new ArrayList<>();
         this.tocLinks = new ArrayList<>();
         this.uniqueHrefs = new HashSet();
+        this.contributors = new ArrayList<>();
     }
 
     /**
@@ -117,7 +131,21 @@ public class EpubBook {
         this.language = language;
         this.id = id;
         this.title = title;
-        this.author = author;
+        addContributor(new Author(author));
+    }
+
+    /**
+     * Constructs EpubBook
+     *
+     * @param language the 2 letter language code set in the dc:language metadata
+     * @param id the id used as the meta data dc:identifier
+     * @param title the title of the book
+     */
+    public EpubBook(String language, String id, String title) {
+        this();
+        this.language = language;
+        this.id = id;
+        this.title = title;
     }
 
     /**
@@ -399,17 +427,30 @@ public class EpubBook {
     }
 
     /**
-     * @return the author
+     * @return the first author in the contributor list
+     * @deprecated use {@link #getContributors()} instead.
      */
+    @Deprecated
     public String getAuthor() {
-        return author;
+        Contributor firstAuthor = ((Contributor)(CollectionUtils.find(getContributors(), new Predicate() {
+            @Override
+            public boolean evaluate(Object o) {
+                return ((Contributor)o).getType() == ContributorType.Author;
+            }
+        })));
+
+        return firstAuthor != null ? firstAuthor.getName() : null;
     }
 
     /**
-     * @param author the author to set
+     * Adds an author to this ePub.
+     *
+     * @param author the author to add
+     * @deprecated  use {@link #addContributor(Contributor)} instead.
      */
+    @Deprecated
     public void setAuthor(String author) {
-        this.author = author;
+        addContributor(new Author(author));
     }
 
     /**
@@ -424,6 +465,21 @@ public class EpubBook {
      */
     public Set getUniqueHrefs() {
         return uniqueHrefs;
+    }
+
+    public void addContributor(Contributor contributor) {
+        contributors.add(checkAndSetContributorId(contributor));
+    }
+
+    public List<Contributor> getContributors() {
+        return contributors;
+    }
+
+    private Contributor checkAndSetContributorId(Contributor contributor) {
+        if (contributor.getId() == null) {
+            contributor.setId("contributor_" + (contributorId++));
+        }
+        return contributor;
     }
 
 }
