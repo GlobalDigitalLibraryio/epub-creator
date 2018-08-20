@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>coza.opencollab.epub</groupId>
     <artifactId>epub-creator</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1-GDL-SNAPSHOT</version>
     <packaging>jar</packaging>
     
     <scm>
-        <connection>scm:git:git@github.com:OpenCollabZA/epub-creator.git</connection>
-        <url>scm:git:git@github.com:OpenCollabZA/epub-creator.git</url>
-        <developerConnection>scm:git:git@github.com:OpenCollabZA/epub-creator.git</developerConnection>
+        <connection>scm:git:git@github.com:GlobalDigitalLibraryio/epub-creator.git</connection>
+        <url>scm:git:git@github.com:GlobalDigitalLibraryio/epub-creator.git</url>
+        <developerConnection>scm:git:git@github.com:GlobalDigitalLibraryio/epub-creator.git</developerConnection>
       <tag>HEAD</tag>
   </scm>
     
@@ -53,17 +53,17 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <distributionManagement>
         <repository>
-            <id>opencollab-maven-public-releases</id>
-            <name>OPENCOLLAB public releases repository</name>
-            <url>https://nexus3.opencollab.co.za/repository/opencollab-maven-public-releases</url>
+            <id>gdl-releases</id>
+            <name>GDL Releases</name>
+            <url>https://nexus.knowit.no/nexus/content/repositories/gdl-releases/</url>
         </repository>
         <snapshotRepository>
-            <id>opencollab-maven-public-snapshots</id>
-            <name>OPENCOLLAB public snaphots repository</name>
-            <url>https://nexus3.opencollab.co.za/repository/opencollab-maven-public-snapshots</url>
+            <id>gdl-snapshots</id>
+            <name>GDL Snapshots</name>
+            <url>https://nexus.knowit.no/nexus/content/repositories/gdl-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
     
