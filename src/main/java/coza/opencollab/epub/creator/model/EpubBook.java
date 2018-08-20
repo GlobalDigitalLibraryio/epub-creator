@@ -68,6 +68,11 @@ public class EpubBook {
     private String title;
 
     /**
+     * The description of the book
+     */
+    private String description;
+
+    /**
      * List of people contributing to this book, including primary contributors such as authors
      */
     private List<Contributor> contributors;
@@ -480,6 +485,17 @@ public class EpubBook {
             contributor.setId("contributor_" + (contributorId++));
         }
         return contributor;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

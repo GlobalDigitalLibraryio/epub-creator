@@ -93,7 +93,14 @@ public class OpfCreatorDefault implements OpfCreator {
         addNodeData(metaNode, "dc:title", book.getTitle());
         addNodeData(metaNode, "dc:language", book.getLanguage());
         addNodeData(metaNode, "meta", new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'").format(new Date()));
+        addDescription(metaNode, book.getDescription());
         addContributorTags(metaNode, book.getContributors());
+    }
+
+    private void addDescription(TagNode metaNode, String description) {
+        if(description != null && !description.trim().isEmpty()) {
+            addNodeData(metaNode, "dc:description", description.trim());
+        }
     }
 
     private void addContributorTags(TagNode metaNode, List<Contributor> contributors) {
